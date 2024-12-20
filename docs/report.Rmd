@@ -1,0 +1,202 @@
+---
+title: "New database: Business survey"
+author: 
+  - name: "Daniel Aromí"
+    affiliation: "IIEP (UBA-CONICET), Facultad de Ciencias Económicas, Univ. de Buenos Aires. Facultad de Ciencias Económicas, UCA, Buenos Aires, Argentina."
+    email: "aromi.daniel@gmail.com"
+  - name: "María Paula Bonel"
+    affiliation: "IIEP (UBA-CONICET), Facultad de Ciencias Económicas, Univ. de Buenos Aires. Facultad de Ciencias Económicas, UCA, Buenos Aires, Argentina."
+    email: "mpaulabone@gmail.com"
+  - name: "Llada Martín"
+    affiliation: "IIEP (UBA-CONICET), Facultad de Ciencias Económicas, Univ. de Buenos Aires."
+    email: "lladamartin@gmail.com"
+#date: "`r format(Sys.Date(), '%B, %Y')`"
+output:
+  html_document:
+    theme: united
+    #toc: true
+    #toc_depth: 3
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+Sys.setlocale("LC_TIME", "C")
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "C:/Users/user/Documents/GitHub/ECC")
+```
+
+## {.tabset}
+
+### Introduction
+
+Through this portal, we will share indicators based on earnings conference calls.
+
+On this first occasion, we are sharing the database linked to a recent academic work.
+
+In subsequent updates to this portal, we will not only update the database but also incorporate other applications.
+
+We also want to express our special thanks to Sebastian Manzi and Jeremias Schneider for their excellent collaboration as research assistants on this project. 
+
+### A specific application
+
+#### <span style="font-size: 24px; font-weight: bold; font-style: italic;">Listening to the price-setters: Inferring inflation expectations from synthetic surveys</span>
+
+##### <span style="font-size: 20px; font-weight: bold; font-style: italic;">Highlights</span>
+* **Novel Approach:** The paper introduces a method using fine-tuned LLMs to extract inflation expectations from earnings call transcripts, leveraging unstructured text data for richer insights.
+
+* **Methodology:** The process involves fine-tuning LLMs, generating inflation-related text completions, and transforming them into quantitative indicators using natural language inference.
+
+* **Complementary Insights:** Synthetic surveys provide unique insights into business inflation perceptions that are often undetectable by traditional indicators like inflation swaps or professional surveys.
+
+* **Better than NLP Basics:** The proposed approach surpasses traditional NLP techniques, such as bag-of-words or sentiment analysis, by capturing the nuanced context and deeper patterns in textual data.
+
+##### <span style="font-size: 20px; font-weight: bold; font-style: italic;">Abstract</span>
+We propose a novel method to extract business inflation expectations via synthetic surveys completed by finetuned large language models (LLMs). These models are trained in pseudo-realtime using earnings conference calls' transcripts. The analysis covers inflation in the US for the sample period 2011-2023. Synthetic surveys anticipate inflation over multiple forecast horizons. The proposed approach is shown to produce information that goes beyond that found in traditional business surveys and market-based indicators. The predictive performance of synthetic surveys cannot be matched applying conventional text processing techniques. Our results demonstrate the value of expanding the set of expectation metrics used in academic and policy analysis of inflation dynamics.
+
+##### <span style="font-size: 20px; font-weight: bold; font-style: italic;">Data</span>
+The paper could be download from [here](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4955056).
+
+The data could be download from [here](https://drive.google.com/file/d/1o5PcVU2VIKpo9d8snWZkIl-S5mRrNf3Q/view?usp=sharing).
+
+##### <span style="font-size: 20px; font-weight: bold; font-style: italic;">Monthly report</span>
+
+The following Table shows the latest numbers of our business inflation expectations via synthetic surveys completed by finetuned large language models (LLMs): 
+
+
+```{r code1,include=F, warning=FALSE }
+#load libraries
+library(tidyverse)
+library(gt)
+library(gtExtras)
+library(plotly)
+library(ggrepel)
+library(lubridate)
+```
+
+```{r code2,include=FALSE, warning=FALSE }
+# base surge de script "script_reg_plan.R" en ".\reuters\taller paper\ejercicio"
+dfa = read.csv("./docs/dataset_report.csv")
+dfa = as_tibble(dfa[,2:length(dfa)])
+
+# ss3
+dfb = read.csv("./docs/synthetic survey inflation.csv")
+dfb = as_tibble(dfb[,2:length(dfb)])
+dfb = dfb %>% mutate(date = paste(substr(date,1,4),substr(date,5,6),"01",sep="-"))
+
+df = dfa %>% left_join(dfb,by=c("date"))
+```
+
+
+```{r code3,include=F, warning=FALSE,echo=FALSE}
+#table gt 
+
+last_date_ss3 <- df %>% 
+   slice(n()) %>% 
+  mutate(sbs = index_ss3) %>%
+  mutate(country='US',Last = index_ss3) %>%
+  select(country,Last)
+
+last_period_ss3 <- df %>% 
+  filter(as.Date(date) >= max(as.Date(date)) %m-% months(6)) %>% 
+  mutate(sbs = index_ss3) %>%
+  summarise(Timeline = list(c(index_ss3)))%>%
+  mutate(country='US') %>%
+  select(country,Timeline)
+
+
+tabla_ss3 = last_date_ss3  %>% 
+              left_join(last_period_ss3, by = 'country') %>% 
+              gt() %>% 
+              tab_header(
+                title =  md("Inflation expectations in the US<br>based on Synthetic business surveys (sbs)")
+              ) %>% 
+               tab_caption(paste("Monthly report - ",format(Sys.Date(), "%B %Y"))) %>%
+              tab_footnote("Notes: Period contains the last 6 months") %>%
+                #footnote = md("Source: [St. Louis Fed](https://fred.stlouisfed.org/series/CPIAUCSL)")) %>%
+              cols_label(Last = paste0('sbs index (last - ',format(Sys.Date() %m-% months(1), "%B %Y"),')'),
+                         Timeline = 'Period') %>%
+              fmt_number(columns = where(is.numeric), decimals = 2) %>%
+              gt_theme_538() %>% 
+              gt_plt_sparkline(
+                column = Timeline,
+                palette = c("grey40", "grey40", "grey40", "dodgerblue1", "grey40"),
+                fig_dim = c(5, 28)
+              ) %>%
+              cols_hide('country')
+
+
+```
+```{r code4,include=T, warning=FALSE,echo=FALSE}
+tabla_ss3
+```
+
+In the following Figure, we show a strong association between inflation and synthetic business inflation expectations.
+
+```{r code5,include=F, warning=FALSE,echo=FALSE}
+
+#agregar label al grafico
+df <- df %>%
+  mutate(mylabel = paste("Date: ", date, "\n",
+                         "Monthly inflation rate: ", round(gcpi,2), "\n",
+                         "SBS index: ", round(ss3,2),sep=""))
+
+
+df = df %>% mutate(
+    ss3_scaled = scale(ss3)[, 1],
+    gcpi_scaled = scale(gcpi)[, 1]  
+  )
+
+df = as_tibble(df)
+
+df2 = df %>% select(date,mylabel, ss3_scaled, gcpi_scaled)
+df2 = df2 %>% gather(var,value,3:length(df2))
+
+
+#labels = c("gcpi_scaled" = "Inflation Rate", "ss3_scaled" = "SBS Index")
+df2$var2 = ""
+df2$var2[df2$var=="gcpi_scaled"] = "Inflation Rate"
+df2$var2[df2$var=="ss3_scaled"] = "SBS Index"
+
+
+# Crear el gráfico con ggplot y usar "text" en lugar de "label"
+p <- ggplot(df2) +
+  geom_line(aes(x = as.Date(date), y = value, color = var2)) +
+  geom_point(aes(x = as.Date(date), y = value), alpha = 0) + # Añadir puntos invisibles para que plotly pueda leer los 'hover'
+scale_x_date(date_labels = "%Y-%m-%d",date_breaks  ="6 month")+ 
+  labs(x = "",y="", title = "",color = "") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+axis.line = element_line(colour = "black"),
+panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank(),
+    panel.background = element_blank())+
+  scale_color_brewer(palette = "Dark2")  # Asignar nuevos nombres a las categorías
+
+
+# Convertir a ggplotly y pasar directamente los valores del tooltip
+p_plotly <- ggplotly(p) %>%
+  layout(
+    hoverlabel = list(bgcolor = "white", font = list(size = 12)),
+  annotations = list(
+      x = 0.15,  # Centramos la nota al pie
+      y = -0.22,  # Un poco más cerca del gráfico
+      text = "Note: the variables were standardized.",
+      xref = 'paper',
+      yref = 'paper',
+      showarrow = FALSE,
+      xanchor = 'center',  # Centramos horizontalmente la nota al pie
+      yanchor = 'top',
+      font = list(size = 10)
+    )
+  ) %>%
+  style(text = df2$mylabel, hoverinfo = "text")
+
+
+```
+
+
+```{r code6,include=T, warning=FALSE,echo=FALSE}
+p_plotly
+```
+
+
+
