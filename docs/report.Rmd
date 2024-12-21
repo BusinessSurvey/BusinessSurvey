@@ -21,31 +21,38 @@ output:
 ```{r setup, include=FALSE, warning=FALSE}
 Sys.setlocale("LC_TIME", "C")
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "C:/Users/user/Documents/GitHub/ECC")
+knitr::opts_knit$set(root.dir = "C:/Users/user/Documents/GitHub/BusinessSurvey")
 ```
 
 ## {.tabset}
 
 ### Introduction
 
-Through this portal, we will share indicators based on earnings conference calls.
+##### <span style="font-size: 20px; font-weight: bold; font-style: italic;">Introduction</span>
 
-On this first occasion, we are sharing the database linked to a recent academic work.
+Welcome to our new portal, where we will share valuable indicators derived from earnings conference calls transcripts.
 
-In subsequent updates to this portal, we will not only update the database but also incorporate other applications.
+##### <span style="font-size: 20px; font-weight: bold; font-style: italic;">About the Database</span>
 
-We also want to express our special thanks to Sebastian Manzi and Jeremias Schneider for their excellent collaboration as research assistants on this project. 
+This initial release features a time series of inflation expectations linked to a recent academic study. Future updates will not only update the indicator but also introduce additional applications to enhance its utility.
 
-### A specific application
+##### <span style="font-size: 20px; font-weight: bold; font-style: italic;">Acknowledgements</span>
 
-#### <span style="font-size: 24px; font-weight: bold; font-style: italic;">Listening to the price-setters: Inferring inflation expectations from synthetic surveys</span>
+We want to express our special thanks to Sebastian Manzi and Jeremias Schneider for their excellent collaboration as research assistants on this project.
+
+![](C:\\Users\\user\\Documents\\GitHub\\BusinessSurvey\\docs\\ecc_image.jpeg)
+
+
+### Inflation expectations
+
+#### <span style="font-size: 24px; font-weight: bold; font-style: italic;">Data from: "Listening to the price-setters: Inferring inflation expectations from synthetic surveys"</span>
 
 ##### <span style="font-size: 20px; font-weight: bold; font-style: italic;">Highlights</span>
 * **Novel Approach:** The paper introduces a method using fine-tuned LLMs to extract inflation expectations from earnings call transcripts, leveraging unstructured text data for richer insights.
 
 * **Methodology:** The process involves fine-tuning LLMs, generating inflation-related text completions, and transforming them into quantitative indicators using natural language inference.
 
-* **Complementary Insights:** Synthetic surveys provide unique insights into business inflation perceptions that are often undetectable by traditional indicators like inflation swaps or professional surveys.
+* **Complementary Insights:** Synthetic surveys provide valuable insights into business inflation perceptions that complemen traditional indicators like inflation swaps or professional surveys.
 
 * **Better than NLP Basics:** The proposed approach surpasses traditional NLP techniques, such as bag-of-words or sentiment analysis, by capturing the nuanced context and deeper patterns in textual data.
 
@@ -110,7 +117,7 @@ tabla_ss3 = last_date_ss3  %>%
                 title =  md("Inflation expectations in the US<br>based on Synthetic business surveys (sbs)")
               ) %>% 
                tab_caption(paste("Monthly report - ",format(Sys.Date(), "%B %Y"))) %>%
-              tab_footnote("Notes: Period contains the last 6 months") %>%
+              tab_footnote("Notes: Period contains the last 6 months.") %>%
                 #footnote = md("Source: [St. Louis Fed](https://fred.stlouisfed.org/series/CPIAUCSL)")) %>%
               cols_label(Last = paste0('sbs index (last - ',format(Sys.Date() %m-% months(1), "%B %Y"),')'),
                          Timeline = 'Period') %>%
