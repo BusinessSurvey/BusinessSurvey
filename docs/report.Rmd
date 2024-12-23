@@ -2,13 +2,13 @@
 title: "New database: Business survey"
 author: 
   - name: "Daniel Aromí"
-    affiliation: "IIEP (UBA-CONICET), Facultad de Ciencias Económicas, Univ. de Buenos Aires. Facultad de Ciencias Económicas, UCA, Buenos Aires, Argentina."
+    affiliation: "IIEP (UBA-CONICET), FCE, UBA & FCE, UCA."
     email: "aromi.daniel@gmail.com"
   - name: "María Paula Bonel"
-    affiliation: "IIEP (UBA-CONICET), Facultad de Ciencias Económicas, Univ. de Buenos Aires. Facultad de Ciencias Económicas, UCA, Buenos Aires, Argentina."
+    affiliation: "IIEP (UBA-CONICET), FCE, UBA & FCE, UCA."
     email: "mpaulabone@gmail.com"
   - name: "Llada Martín"
-    affiliation: "IIEP (UBA-CONICET), Facultad de Ciencias Económicas, Univ. de Buenos Aires."
+    affiliation: "IIEP (UBA-CONICET), FCE, UBA."
     email: "lladamartin@gmail.com"
 #date: "`r format(Sys.Date(), '%B, %Y')`"
 output:
@@ -52,7 +52,7 @@ We want to express our special thanks to Sebastian Manzi and Jeremias Schneider 
 
 * **Methodology:** The process involves fine-tuning LLMs, generating inflation-related text completions, and transforming them into quantitative indicators using natural language inference.
 
-* **Complementary Insights:** Synthetic surveys provide valuable insights into business inflation perceptions that complemen traditional indicators like inflation swaps or professional surveys.
+* **Complementary Insights:** Synthetic surveys provide valuable insights into business inflation perceptions that complement traditional indicators like inflation swaps or professional surveys.
 
 * **Better than NLP Basics:** The proposed approach surpasses traditional NLP techniques, such as bag-of-words or sentiment analysis, by capturing the nuanced context and deeper patterns in textual data.
 
@@ -60,9 +60,9 @@ We want to express our special thanks to Sebastian Manzi and Jeremias Schneider 
 We propose a novel method to extract business inflation expectations via synthetic surveys completed by finetuned large language models (LLMs). These models are trained in pseudo-realtime using earnings conference calls' transcripts. The analysis covers inflation in the US for the sample period 2011-2023. Synthetic surveys anticipate inflation over multiple forecast horizons. The proposed approach is shown to produce information that goes beyond that found in traditional business surveys and market-based indicators. The predictive performance of synthetic surveys cannot be matched applying conventional text processing techniques. Our results demonstrate the value of expanding the set of expectation metrics used in academic and policy analysis of inflation dynamics.
 
 ##### <span style="font-size: 20px; font-weight: bold; font-style: italic;">Data</span>
-The paper could be download from [here](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4955056).
+The paper can be download from [here](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4955056).
 
-The data could be download from [here](https://drive.google.com/file/d/1o5PcVU2VIKpo9d8snWZkIl-S5mRrNf3Q/view?usp=sharing).
+The data can be download from [here](https://drive.google.com/file/d/1o5PcVU2VIKpo9d8snWZkIl-S5mRrNf3Q/view?usp=sharing).
 
 ##### <span style="font-size: 20px; font-weight: bold; font-style: italic;">Monthly report</span>
 
@@ -186,7 +186,8 @@ p_plotly <- ggplotly(p) %>%
   annotations = list(
       x = 0.15,  # Centramos la nota al pie
       y = -0.22,  # Un poco más cerca del gráfico
-      text = "Note: the variables were standardized.",
+      text = "
+      Note: the variables were standardized.",
       xref = 'paper',
       yref = 'paper',
       showarrow = FALSE,
