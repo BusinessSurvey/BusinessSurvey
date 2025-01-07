@@ -89,7 +89,7 @@ dfb = read.csv("./docs/synthetic survey inflation.csv")
 dfb = as_tibble(dfb[,2:length(dfb)])
 dfb = dfb %>% mutate(date = paste(substr(date,1,4),substr(date,5,6),"01",sep="-"))
 
-df = dfa %>% left_join(dfb,by=c("date"))
+df = dfb %>% left_join(dfa,by=c("date"))
 ```
 
 
